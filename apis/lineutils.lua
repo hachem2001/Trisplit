@@ -12,6 +12,10 @@ lineutils.line = {
     else error("Invalid index "..key.." to «line»", 2);
     end
   end,
+
+  __call = function(line, arg1, arg2)
+    
+  end,
 }
 
 function lineutils:new_line(...)
