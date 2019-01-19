@@ -1,0 +1,8 @@
+I'm going to be trying to make some tree-ish graphing.
+Basically, start with a point, make from it 3 lines of equal length.
+From each end of the line make 3 new lines of equal length.
+Preferrable the line making should be animated
+If a line touches an already made line it stops growing and it is marked as "dead", meaning it would not itself split.
+Repeat until no more lines are being made! (maybe).
+
+Should be made with Löve.
