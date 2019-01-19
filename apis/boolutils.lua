@@ -1,4 +1,4 @@
-local asserter = {}
+local boolutils = {}
 
 function assert_form(val, exp)
   local result = false;
@@ -14,4 +14,4 @@ function assert_form(val, exp)
   return result;
 end
 
-return asserter;
+return boolutils;
