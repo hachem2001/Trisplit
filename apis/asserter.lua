@@ -1,12 +1,14 @@
 local asserter = {}
 
 function assert_form(val, exp)
-  local result = true;
+  local result = false;
   if type(val) == type(exp) then
+    result = true;
     if type(val) == "table" then
-
-    else
-
+      for k,v in pairs(val) do
+        result = result and assert_form(v, exp[k]);
+        if not result then break; end
+      end
     end
   end
   return result;
