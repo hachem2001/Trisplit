@@ -13,8 +13,28 @@ lineutils.line = {
     end
   end,
 
-  __call = function(line, arg1, arg2)
-    
+  __call = function(line, arg1, arg2, arg3)
+    if arg1 == 'gpx' then -- get point coordinate given x
+      local x = arg2;
+      if line.b ~= 0 then
+        return x, (-line.a*x-line.c)/line.b;
+      else
+        return x, math.huge;
+      end
+    elseif arg1 == 'gpy' then
+      local y = arg2;
+      if line.a ~= 0 then
+        return (-line.b*y-line.c)/line.b, y;
+      else
+        return math.huge, y;
+      end
+    elseif arg1 == 'gdp' then -- gives two points enough to draw the line, given one point in the line
+      local x, y = arg2, arg3;
+      local dv = vector(-line.b, line.a)
+      local pq = vector(x,y) + dv*200;
+      local qp = vector(x,y) - dv*200;
+      return pq, qp; -- returns two vectors for points, just for convenience
+    end
   end,
 }
 
@@ -23,7 +43,7 @@ function lineutils:new_line(...)
   -- They can also be fully determined using a point and a direction/normal vector
   local m = {...}
   if boolutils.assert_form(m, {{0,0},{0,0}}) then -- 2 points P, Q respectively and their coordinates
-    local v = vector(m[2][1]-m[1][1], m[2][2]-m[2][2]); -- Directional vector, of the form -b, a is the same as vector PQ.
+    local v = vector(m[2][1]-m[1][1], m[2][2]-m[1][2]); -- Directional vector, of the form -b, a is the same as vector PQ.
     -- The line equation is ax + by + c = 0 so c = -ax - by for (x,y) given by any of the 2 points. (P or Q)
     local a, b = v.y, -v.x
     local c = -a*m[2][1]-b*m[2][2]

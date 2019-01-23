@@ -6,3 +6,9 @@ If a line touches an already made line it stops growing and it is marked as "dea
 Repeat until no more lines are being made! (maybe).
 
 Should be made with Löve.
+
+Also, to do :
+ Add the ability to make a coordinate line from a line given a point from it and a directing vector
+ can be used to project a point on a line and get the resulting line coordinate.
+
+ I also need to get an orthogonal projection point coordinates. It would be incredibly useful for me to have so.
