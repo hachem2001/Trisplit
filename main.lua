@@ -3,13 +3,13 @@
 vector = require "apis/vector"
 boolutils = require "apis/boolutils"
 lineutils = require "apis/lineutils"
-local A, B = {200, 200}, {250, 250} -- 2 points A and B
-local C, D = {300, 200}, {50, 250} -- 2 points C and D
+local A, B = {100, 200}, {250, 250} -- 2 points A and B
+local C, D = {300, 200}, {320, 250} -- 2 points C and D
 local line1 = lineutils:new_line(A,B);
 local line2 = lineutils:new_line(C,D);
 local pq1, qp1 = line1('gdp', A[1], A[2]);
 local pq2, qp2 = line2('gdp', C[1], C[2]);
-
+local _, intersection = lineutils.get_intersection(line1, line2);
 -->Events
 --
 function love.load()
@@ -17,7 +17,13 @@ function love.load()
 end
 
 function love.update(dt)
-
+    local mx, my = love.mouse.getPosition();
+    B[1] = mx;
+    B[2] = my;
+    line1('update', A, B);
+    pq1, qp1 = line1('gdp', A[1], A[2]);
+    pq2, qp2 = line2('gdp', C[1], C[2]);
+    _, intersection = lineutils.get_intersection(line1, line2);
 end
 
 function love.draw()
@@ -28,4 +34,6 @@ function love.draw()
   love.graphics.circle("line", B[1], B[2], 10)
   love.graphics.circle("line", C[1], C[2], 10)
   love.graphics.circle("line", D[1], D[2], 10)
+  love.graphics.setColor(1,0.5,0.5,1)
+  love.graphics.circle("line", intersection.x, intersection.y, 10);
 end
