@@ -12,3 +12,15 @@ Also, to do :
  can be used to project a point on a line and get the resulting line coordinate.
 
  I also need to get an orthogonal projection point coordinates. It would be incredibly useful for me to have so.
+
+
+Suggestions for rays and segments:
+  Possibly make it by storing a information of a point and the unitary directional vector. Would be a better idea.
+  For intersection of rays, maybe get the intersection of 2 lines and check if the the vector from the ray point to it is of the same direction to the directing vector.
+  and also do the same check for the intersecting ray.
+  if it is line-ray intersection only one check is enough
+  If It was a line-segment intersection I would need to make sure that the 2 vectors are co-linear or that the projected coordinates on the holding line is positive and less than the length of the line.
+
+  This will be fun
+
+  I might also resort to grouping all of lineutils, rayutils and then segmentutils under one library, perhaps called geomutils
