@@ -18,20 +18,10 @@ lineutils.line = {
   __call = function(line, arg1, arg2, arg3, arg4)
     if arg1 == 'update' then
       line[1], line[2], line[3] = lineutils.new_line_raw(arg2[1], arg2[2], arg3[1], arg3[2]);
-    elseif arg1 == 'draw' then -- arg2 and arg3 are from where to project the point. arg 4 are the lenght
-      local x, y = lineutils.project_get(line, arg2 or 0, arg3 or 0)
-      local lenght2 = (arg4 or 200) /2 -- the half lenght
-      local dv = vector(-line.b, line.a)^1 -- get a unitary directional vector
-      local pq = vector(x,y) + dv*lenght2;
-      local qp = vector(x,y) - dv*lenght2;
-      love.graphics.line(pq.x, pq.y, qp.x, qp.y);
-    elseif arg1 == 'draw-points' then -- same as draw, but only returns the points now
-      local x, y = lineutils.project_get(line, arg2 or 0, arg3 or 0)
-      local lenght2 = (arg4 or 200) /2 -- the half lenght
-      local dv = vector(-line.b, line.a)^1 -- get a unitary directional vector
-      local pq = vector(x,y) + dv*lenght2;
-      local qp = vector(x,y) - dv*lenght2;
-      return pq, qp;
+    elseif arg1 == 'draw' then
+      lineutils.draw_line(line, arg2, arg3, arg4);
+    elseif arg1 == 'draw-points' then
+      return lineutils.get_drawing_points(line, arg2, arg3, arg4);
     elseif arg1 == 'gpx' then -- get point coordinate given x
       local x = arg2;
       if line.b ~= 0 then
@@ -46,12 +36,6 @@ lineutils.line = {
       else
         return math.huge, y;
       end
-    elseif arg1 == 'gdp' then -- gives two points enough to draw the line, given one point in the line
-      local x, y = arg2, arg3;
-      local dv = vector(-line.b, line.a)
-      local pq = vector(x,y) + dv*200;
-      local qp = vector(x,y) - dv*200;
-      return pq, qp; -- returns two vectors for points, just for convenience
     end
   end,
 }
@@ -81,6 +65,20 @@ function lineutils:new_line(...)
   end
 end
 
+function lineutils.get_drawing_points(line, arg2, arg3, arg4)
+  --gets drawing points by projecting the point (arg3, arg4) onto the line and get the limiting points of a segment of the line of lenght arg2 having the projected point as its middle.
+  local point = lineutils.project_get(line, arg3 or love.graphics.getWidth()/2, arg4 or love.graphics.getHeight()/2)
+  local lenght2 = (arg2 or 1000) /2 -- the half lenght
+  local dv = vector(-line.b, line.a)^1 -- get a unitary directional vector
+  local pq = point + dv*lenght2;
+  local qp = point - dv*lenght2;
+  return pq, qp;
+end
+
+function lineutils.draw_line(line, arg2, arg3, arg4)
+  local pq, qp = lineutils.get_drawing_points(line, arg2, arg3, arg4);
+  love.graphics.line(pq.x, pq.y, qp.x, qp.y);
+end
 
 function lineutils.get_intersection(line1, line2)
   -- Returns : b:bool, x:num, y:num
