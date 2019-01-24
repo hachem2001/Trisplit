@@ -24,3 +24,8 @@ Suggestions for rays and segments:
   This will be fun
 
   I might also resort to grouping all of lineutils, rayutils and then segmentutils under one library, perhaps called geomutils
+
+Fun note :
+  Using projected coordinates, it is even possible to make -dashed lines- and check intersections with one of its dashes without too much efficiency loss
+  The clue is in checking if the line coordinate modulo some dash lenght * 2 is bigger or smaller than the dash lenght
+  
