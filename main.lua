@@ -6,7 +6,7 @@ lineutils = require "apis/lineutils"
 rayutils  = require "apis/rayutils"
 drawutils = require "apis/drawutils"
 
-local A, B = {100, 200}, {250, 250} -- 2 points A and B
+local A, B = {400, 400}, {250, 250} -- 2 points A and B
 local C, D = {300, 200}, {320, 250} -- 2 points C and D
 local M = {300, 200}
 local line1 = lineutils:new_line(A,B);
@@ -26,9 +26,6 @@ function love.update(dt)
     B[2] = my;
     line1('update', A, B);
     ray('update', A, B);
-    pq1, qp1 = line1('gdp', A[1], A[2]);
-    pq2, qp2 = line2('gdp', C[1], C[2]);
-    _, intersection = lineutils.get_intersection(line1, line2);
 end
 
 function love.draw()
@@ -39,9 +36,11 @@ function love.draw()
 
 
   love.graphics.setColor(1,0.5,0.5,1)
+  local exists, intersection = lineutils.get_intersection(line1, line2);
   ray('draw');
-  love.graphics.circle("line", intersection.x, intersection.y, 10);
-
+  if exists then
+    love.graphics.circle("line", intersection.x, intersection.y, 10);
+  end
 
   love.graphics.setColor(1,1,0.5,1)
   local int = lineutils.project_get(line1, M[1], M[2]);

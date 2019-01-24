@@ -13,8 +13,6 @@ lineutils.line = {
     end
   end,
 
-
-
   __call = function(line, arg1, arg2, arg3, arg4)
     if arg1 == 'update' then
       line[1], line[2], line[3] = lineutils.new_line_raw(arg2[1], arg2[2], arg3[1], arg3[2]);

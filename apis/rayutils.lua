@@ -53,12 +53,12 @@ function rayutils.new_ray_raw(x1, y1, x2, y2)
 end
 
 function rayutils.draw_ray(ray, lenght)
-  local ep = ray.dv * (lenght or 1000);
+  local ep = ray.p + ray.dv * (lenght or 1000);
   love.graphics.line(ray.p.x, ray.p.y, ep.x, ep.y);
 end
 
 function rayutils.get_drawing_points(ray, lenght)
-  return ray[1], ray.dv * (lenght or 1000);
+  return ray[1], ray.p + ray.dv * (lenght or 1000);
 end
 
 return rayutils;
