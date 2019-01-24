@@ -5,6 +5,7 @@ boolutils = require "apis/boolutils"
 lineutils = require "apis/lineutils"
 local A, B = {100, 200}, {250, 250} -- 2 points A and B
 local C, D = {300, 200}, {320, 250} -- 2 points C and D
+local M = {50, 200}
 local line1 = lineutils:new_line(A,B);
 local line2 = lineutils:new_line(C,D);
 local pq1, qp1 = line1('gdp', A[1], A[2]);
@@ -36,4 +37,10 @@ function love.draw()
   love.graphics.circle("line", D[1], D[2], 10)
   love.graphics.setColor(1,0.5,0.5,1)
   love.graphics.circle("line", intersection.x, intersection.y, 10);
+  love.graphics.setColor(1,1,0.5,1)
+  local int = lineutils.project_get(line1, M[1], M[2]);
+  love.graphics.circle("line", M[1], M[2], 10);
+  love.graphics.circle("line", int.x, int.y, 10);
+  love.graphics.line( M[1], M[2], int.x, int.y)
+
 end

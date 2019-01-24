@@ -15,9 +15,23 @@ lineutils.line = {
 
 
 
-  __call = function(line, arg1, arg2, arg3)
+  __call = function(line, arg1, arg2, arg3, arg4)
     if arg1 == 'update' then
-      line[1], line[2], line[3] = lineutils.new_line_raw(arg2[1], arg2[2], arg3[1], arg3[2])
+      line[1], line[2], line[3] = lineutils.new_line_raw(arg2[1], arg2[2], arg3[1], arg3[2]);
+    elseif arg1 == 'draw' then -- arg2 and arg3 are from where to project the point. arg 4 are the lenght
+      local x, y = lineutils.project_get(line, arg2 or 0, arg3 or 0)
+      local lenght2 = (arg4 or 200) /2 -- the half lenght
+      local dv = vector(-line.b, line.a)^1 -- get a unitary directional vector
+      local pq = vector(x,y) + dv*lenght2;
+      local qp = vector(x,y) - dv*lenght2;
+      love.graphics.line(pq.x, pq.y, qp.x, qp.y);
+    elseif arg1 == 'draw-points' then -- same as draw, but only returns the points now
+      local x, y = lineutils.project_get(line, arg2 or 0, arg3 or 0)
+      local lenght2 = (arg4 or 200) /2 -- the half lenght
+      local dv = vector(-line.b, line.a)^1 -- get a unitary directional vector
+      local pq = vector(x,y) + dv*lenght2;
+      local qp = vector(x,y) - dv*lenght2;
+      return pq, qp;
     elseif arg1 == 'gpx' then -- get point coordinate given x
       local x = arg2;
       if line.b ~= 0 then
@@ -95,6 +109,17 @@ function lineutils.get_intersection(line1, line2)
   else
     return true, vector((k*b-j*c)/(j*a-i*b), (k*a-i*c)/(i*b-j*a));
   end
+end
+
+function lineutils.project_get(line, x, y)
+  -- get the coordinotes of the orthogonal projection of a
+  --point onto a line.
+  -- Same mathematics as for a line intersection, except now the second line
+  --is the line passing by (x,y) and orthogonal to line
+  local a, b, c, i, j = line.a, line.b, line.c, line.b, -line.a;
+  local k = -i*x-j*y;
+
+  return vector((k*b-j*c)/(j*a-i*b), (k*a-i*c)/(i*b-j*a));
 end
 
 return lineutils;
