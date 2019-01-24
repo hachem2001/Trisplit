@@ -53,7 +53,9 @@ function lineutils:new_line(...)
   -- They can also be fully determined using a point and a direction/normal vector
   local m = {...}
   if boolutils.assert_form(m, {{0,0},{0,0}}) then -- 2 points P, Q respectively and their coordinates
-    local m = m
+    if m[2][1] == m[1][1] and m[1][2] == m[2][2] then
+      error('Invalid line, superpositioned points', 2);
+    end
     local a,b,c = self.new_line_raw(m[1][1],m[1][2],m[2][1],m[2][2]); -- Get a, b and c constants
     return setmetatable({a,b,c},self.line);
   elseif boolutils.assert_form(m, {0,0,0}) then -- given a, b and c
@@ -61,7 +63,7 @@ function lineutils:new_line(...)
   elseif boolutils.assert_form(m, {{0,0}, vector(0,0)}) then --Given a point and the directional vector.
     return setmetatable({m[2].y, -m[2].x, -m[2].y*m[1][1]+m[2].x*m[1][2]}, self.line)
   else
-    error("Invalid form for making a «line»");
+    error("Invalid form for making a «line»", 2);
   end
 end
 

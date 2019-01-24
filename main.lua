@@ -3,6 +3,7 @@
 vector    = require "apis/vector"
 boolutils = require "apis/boolutils"
 lineutils = require "apis/lineutils"
+rayutils  = require "apis/rayutils"
 drawutils = require "apis/drawutils"
 
 local A, B = {100, 200}, {250, 250} -- 2 points A and B
@@ -11,6 +12,8 @@ local M = {300, 200}
 local line1 = lineutils:new_line(A,B);
 local line2 = lineutils:new_line(C,D);
 local _, intersection = lineutils.get_intersection(line1, line2);
+local ray = rayutils.new_ray(A, B)
+
 -->Events
 --
 function love.load()
