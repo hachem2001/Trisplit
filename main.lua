@@ -42,9 +42,4 @@ function love.draw()
     love.graphics.circle("line", intersection.x, intersection.y, 10);
   end
 
-  love.graphics.setColor(1,1 ,0.5,1)
-  local int = lineutils.project_get(ray1, M[1], M[2]);
-  drawutils.draw_cpoints('line', 10, nil, M, int);
-  love.graphics.line( M[1], M[2], int.x, int.y)
-
 end
