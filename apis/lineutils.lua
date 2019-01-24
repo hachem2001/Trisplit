@@ -7,8 +7,8 @@ lineutils.line = {
     if key == "a" then return line[1]; -- get the x coefficient a
     elseif key == "b" then return line[2]; -- get the y coefficient b
     elseif key == "c" then return line[3]; -- get the constant c
-    elseif key == "v" then return vector(-line[2], line[1]); -- get directional vector
-    elseif key == "vn"then return vector(line[1], line[2]); -- get normal vector
+    elseif key == "dv" then return vector(-line[2], line[1]); -- get directional vector
+    elseif key == "nv"then return vector(line[1], line[2]); -- get normal vector
     else error("Invalid index "..key.." to «line»", 2);
     end
   end,

@@ -61,4 +61,25 @@ function rayutils.get_drawing_points(ray, lenght)
   return ray[1], ray.p + ray.dv * (lenght or 1000);
 end
 
+function rayutils.get_projected_coordinates(ray, x1, y1)
+  local v = vector(x1, y1)-ray.p;
+  return ray.dv * v; -- dot product should suffise.
+end
+
+function rayutils.get_intersection(ray1, ray2)
+  -- Returns : b:bool, x:num, y:num
+  -- b : intersection happened -> true, otherwise false
+  -- x, y : coordinates of the intersection if an intersection exists
+
+  local a, b, c, i, j, k = ray1.a, ray1.b, ray1.c, ray2.a, ray2.b, ray2.c;
+  if (-i*b + j*a) == 0 then -- if the rays are parallel
+    return false, vector(0, 0); -- The last 2 numbers are nonsensical. But they are there in order not to break a lazy coder's program
+  else
+    local result = vector((k*b-j*c)/(j*a-i*b), (k*a-i*c)/(i*b-j*a));
+    local m1, m2 = ray1.dv * (result-ray1.p), ray2.dv * (result-ray2.p);
+    return (m1>=0) and (m2>=0), result
+  end
+end
+
+
 return rayutils;
