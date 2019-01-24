@@ -12,7 +12,7 @@ local M = {300, 200}
 local line1 = lineutils:new_line(A,B);
 local line2 = lineutils:new_line(C,D);
 local _, intersection = lineutils.get_intersection(line1, line2);
-local ray = rayutils.new_ray(A, B)
+local ray = rayutils:new_ray(A, B)
 
 -->Events
 --
@@ -25,6 +25,7 @@ function love.update(dt)
     B[1] = mx;
     B[2] = my;
     line1('update', A, B);
+    ray('update', A, B);
     pq1, qp1 = line1('gdp', A[1], A[2]);
     pq2, qp2 = line2('gdp', C[1], C[2]);
     _, intersection = lineutils.get_intersection(line1, line2);
@@ -36,8 +37,11 @@ function love.draw()
   line2('draw');
   drawutils.draw_cpoints('line', 10, nil, A, B, C, D)
 
+
   love.graphics.setColor(1,0.5,0.5,1)
+  ray('draw');
   love.graphics.circle("line", intersection.x, intersection.y, 10);
+
 
   love.graphics.setColor(1,1,0.5,1)
   local int = lineutils.project_get(line1, M[1], M[2]);

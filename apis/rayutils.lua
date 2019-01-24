@@ -7,22 +7,23 @@ rayutils.ray = {
   __index = function(ray, key)
     if key == 'p' then return ray[1]
       elseif key == 'dv' then return ray[2]
-      elseif key == "a" then return line[1]; -- get the x coefficient a
-      elseif key == "b" then return line[2]; -- get the y coefficient b
-      elseif key == "c" then return line[3]; -- get the constant c
+      elseif key == "a" then return ray[3]; -- get the x coefficient a
+      elseif key == "b" then return ray[4]; -- get the y coefficient b
+      elseif key == "c" then return ray[5]; -- get the constant c
       else error("Invalid index "..key.." to «ray»", 2);
     end
   end,
-  __call = function(ray, arg1, arg2)
+  __call = function(ray, arg1, arg2, arg3)
     if arg1 == 'update' then
-
-    if arg1 == 'draw' then
-      rayutils.draw_ray(ray, lenght or 1000)
+      local p, v, a, b, c = rayutils.new_ray_raw(arg2[1], arg2[2], arg3[1], arg3[2]);
+      ray[1],ray[2],ray[3],ray[4],ray[5] = p,v,a,b,c;
+    elseif arg1 == 'draw' then
+      rayutils.draw_ray(ray, arg2 or 1000)
     end
   end,
 }
 
-function rayutils.new_ray(...)
+function rayutils:new_ray(...)
   -- rays will be stored as a point and a directing vector
   -- They can also be fully determined using 2 distinct points
   -- ray = {vector(point), vector(direction), a, b, c}
@@ -41,6 +42,14 @@ function rayutils.new_ray(...)
   else
     error("Invalid form for making a «ray»", 2);
   end
+end
+
+function rayutils.new_ray_raw(x1, y1, x2, y2)
+  local v = vector(x2-x1, y2-y1); -- Directional vector, of the form -b, a is the same as vector PQ.
+  -- The line equation is ax + by + c = 0 so c = -ax - by for (x,y) given by any of the 2 points. (P or Q)
+  local a, b = v.y, -v.x;
+  local c = -a*x2-b*y2;
+  return vector(x1, y1),v^1,a,b,c;
 end
 
 function rayutils.draw_ray(ray, lenght)
